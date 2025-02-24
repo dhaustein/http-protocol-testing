@@ -116,10 +116,9 @@ The acceptance tests represent the most comprehensive and valuable, but expensiv
 - Comprehensive but slower to run
 - Catch environment-specific issues
 
-(TODO include diagram)
+![E2E testing with a Proxy diagram](disgram.jpg)
 
 __Note:__ It is important _not_ to verify the system using the same protocol we are testing. That way we can somewhat circumvent a scenario where our protocol is faulty/unreliable (aka The Two Generals' Problem) and the tested system would "lie" to us about its own state. In the diagram above I propose to use probes at various points of the communication path, that would report back using a different protocol (observability).
-
 
 ### CI/CD and the Next steps
 
