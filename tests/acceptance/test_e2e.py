@@ -8,7 +8,7 @@ import pytest
 
 
 def get_container_logs(container_id: str) -> str:  # type: ignore
-    """Retrieve container logs for debugging"""
+    """Retrieves container logs/stdout"""
     pass
 
 
