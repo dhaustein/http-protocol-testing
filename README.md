@@ -2,7 +2,9 @@
 
 This is a crude HTTP client/server accompanied by a test suite consisting of unit, integration and acceptance tests.
 
-The main goal of all this is to try to explain how to test an HTTP protocol as defined by the RFC9110.
+The main goal of all this is to try to explain how to test an HTTP protocol (RFC 9110) with both the client and the server.
+
+Please scroll down to Test strategy for more on testing.
 
 ## Usage
 
@@ -16,7 +18,7 @@ Use the client to make a request
 $ python client.py -r "request body"
 ```
 
-You should see the request and the response in the logs
+You should see the request and the response in the stdout
 ```bash
 [2025-02-23 16:43:49.459709]
 Client_request:
@@ -82,40 +84,47 @@ todo summary
 
 mention theory of testing protocols (rules, semantics)
 
-### Unit tests
+### Testing layers
 
-these are unit tests for the client and for the server, where the other side is merely mocked
+#### Unit tests
 
-these tests verify the logic of either component in isolation, no actual network calls should happen here
+These tests focus on examining each component of the system in isolation, where the opposing side (client or server) is replaced with mocks.
 
-we are interested in the individual pieces of code are behaving in a way that we can verify to be compliant with the protocol we are interested to test
+- Test client and server components in isolation
+- Use mocks to emulate the other side of the communication
+- Give quick feedback during development
 
-however, the main goal of this layer is to provide quick feedback on changes to developers rather than full compliance verification
+#### Integration tests
 
-### Integration tests
+Integration tests bring together the real client and server components, allowing them to make actual network calls but in a simplified environment.
 
-these are tests that exercise both components together at the same time, little to no mocking should happen here
+- Connect __real__ client and server instances
+- Run in simplified environments (localhost)
+- Do actual network calls
+- Verify protocol compliance
+- Arguably best price to performance part of the test suite
 
-the difference to acceptance testing is that we take a lot of shortcuts to the configuration and especially the test environment for this setup
+#### Acceptance tests
 
-we do not mind that the system is not running in full production configuration/environment, the point here is to verify the two components can talk to each other and that their communication is compliant with the protocol
+The acceptance tests represent the most comprehensive and valuable, but expensive, part of the test suite. These tests should mimic a production environment.
 
-arguably this is the best cost to value layer of the test suite
+- Deploy client and server in production-like environments (here it's containers)
+- Test with real network conditions
+- Performance testing
+- Security testing
+- Could include all middleware (proxies, load balancers, firewalls, DNS etc.)
+- Comprehensive but slower to run
+- Catch environment-specific issues
 
-### Acceptance tests
+(TODO include diagram)
 
-this is the most valuable, but also the most expensive layer of the test suite
+__Note:__ It is important _not_ to verify the system using the same protocol we are testing. That way we can somewhat circumvent a scenario where our protocol is faulty/unreliable (aka The Two Generals' Problem) and the tested system would "lie" to us about its own state. In the diagram above I propose to use probes at various points of the communication path, that would report back using a different protocol (observability).
 
-here the client and server should be deployed in an environment and configuration that resembles the production as close as possible
 
-(include diagram)
+### CI/CD and the Next steps
 
-mention two generals' problem
+build pipeline for the containers
 
-### Assumptions
+infrastructure as code way of setting up the test environment
 
-### Test environment
-
-### Risk
-
-### Verification criteria
+CI system to automate all this and collect test results
