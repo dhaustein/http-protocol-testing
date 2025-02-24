@@ -33,6 +33,8 @@ Integration tests bring together the real client and server components, allowing
 
 #### Acceptance tests
 
+__Note:__ The Podman based acceptance tests here are not yet implemented, but I included a rough sketch to show how they might look.
+
 The acceptance tests represent the most comprehensive and valuable, but expensive, part of the test suite. These tests should mimic a production environment.
 
 - Deploy client and server in production-like environments (here it's containers, but could be VMs or bare metal)
