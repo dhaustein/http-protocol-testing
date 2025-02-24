@@ -112,7 +112,7 @@ The acceptance tests represent the most comprehensive and valuable, but expensiv
 - Test with real network conditions
 - Performance testing
 - Security testing
-- Could include all middleware (proxies, load balancers, firewalls, DNS etc.)
+- Could include all middleware (proxies/load balancers, firewalls, DNS etc.)
 - Comprehensive but slower to run
 - Catch environment-specific issues
 
@@ -123,8 +123,10 @@ __Note:__ It is important _not_ to verify the system using the same protocol we 
 
 ### CI/CD and the Next steps
 
-build pipeline for the containers
+The next steps for this testing suite focus on the following:
 
-infrastructure as code way of setting up the test environment
+- Container build pipeline, that would build new version of the client and server applications, and run them through the gauntlet of tests until finally, if they pass, making them ready for production deployment
 
-CI system to automate all this and collect test results
+- Adopting an infrastructure as code approach would allow for automated, __repeatable__ creation of test environments
+
+- CI/CD system that would manage all this (including observability tools and logging)
