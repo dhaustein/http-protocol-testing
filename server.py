@@ -1,13 +1,14 @@
-# https://docs.python.org/3/library/socket.html#example
+import argparse
 import socket
 from datetime import datetime
 
 HOST = "127.0.0.1"
 PORT = 8080
 NUM_CONNS = 5
+DEFAULT_RESPONSE = b"Request received!"
 
 
-def contruct_response(response_payload: bytes = b"Request received!") -> bytes:
+def contruct_response(response_payload: bytes = DEFAULT_RESPONSE) -> bytes:
     response_line = b"HTTP/1.1 200 OK\r\n"
     headers = b"".join(
         [b"Server: CrappyServer/0.0.1\r\n", b"Content-Type: text/plain\r\n"]
@@ -47,7 +48,20 @@ def start_server(
 
 
 def main():
-    start_server(response=contruct_response())
+    parser = argparse.ArgumentParser(
+        description="HTTP Server with configurable response"
+    )
+    parser.add_argument(
+        "-p",
+        "--response-payload",
+        dest="response_payload",
+        type=str,
+        default=DEFAULT_RESPONSE,
+        help="Custom response payload in plaintext (default: 'Request received!')",
+    )
+    args = parser.parse_args()
+
+    start_server(response=contruct_response(args.response_payload.encode("utf-8")))
 
 
 if __name__ == "__main__":
