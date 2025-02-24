@@ -80,9 +80,10 @@ $ mypy .
 
 ## Test strategy
 
-todo summary
+I was thinking about how would one test a protocol and I got a thought. It is not unlike testing a person on knowing a language. Much like a protocol, a language has rules and semantics.
+While we cannot test a language, we can absolutely test someone on their knowledge (compliance) of a language. And I think this is the right approach here as well.
 
-mention theory of testing protocols (rules, semantics)
+This codebase includes a vey crude and mostly wrong implementation of an HTTP client and server. We can test their behavior on compliance to the HTTP protocol!
 
 ### Testing layers
 
@@ -115,6 +116,7 @@ The acceptance tests represent the most comprehensive and valuable, but expensiv
 - Could include all middleware (proxies/load balancers, firewalls, DNS etc.)
 - Comprehensive but slower to run
 - Catch environment-specific issues
+- Vendor specific (perhaps not always compliant with the protocol) behavior _(looking at your Microsoft)_
 
 ![E2E testing with a Proxy diagram](disgram.jpg)
 
@@ -129,3 +131,5 @@ The next steps for this testing suite focus on the following:
 - Adopting an infrastructure as code approach would allow for automated, __repeatable__ creation of test environments
 
 - CI/CD system that would manage all this (including observability tools and logging)
+
+- A unified source of truth for the protocol specification using an Interface description language, bonus points for it being translatable to our code and tests
