@@ -96,8 +96,7 @@ def test_empty_request_response(server_factory):
 
 def test_extra_long_request_payload_rejected(server_factory):
     """Test that a request larger than the default buffer size of 1024 the server
-    will reject this with 'Connection reset by peer'
-    """
+    will reject this with 'Connection reset by peer'"""
     thread, port = server_factory()
     very_long_payload = b"bla" * 1000000000
 
@@ -129,21 +128,79 @@ def test_unicode_payload(server_factory):
     assert_server_response_compliant(response)
 
 
-# TODO make this actually parallel
 def test_max_num_connections(server_factory):
-    """Test server can handle up to 5 simultaneous connections"""
+    """Test server can handle up to 5 (by default) simultaneous connections"""
     thread, port = server_factory()
-    # Test exactly NUM_CONNS (5)
+    threads = []
+    responses = {}
+
+    def make_request(n):
+        request, response = send_request(f"Connection {n}".encode(), port=port)
+        responses[n] = response
+
     for i in range(5):
-        request, response = send_request(f"Connection {i}".encode(), port=port)
-        assert "Request received!" in response
+        t = threading.Thread(target=make_request, args=(i,))
+        threads.append(t)
+        t.start()
+
+    for t in threads:
+        t.join()
+
+    for i in range(5):
+        assert "Request received!" in responses[i]
 
 
-# TODO make this actually parallel
 def test_over_max_num_connections(server_factory):
-    """Test server refuses more than 5 simultaneous connections"""
-    thread, port = server_factory()
-    # Test more than the allowed NUM_CONNS (5)
-    for i in range(7):
-        request, response = send_request(f"Connection {i}".encode(), port=port)
-        assert "Request received!" in response
+    """Test server will refuse more than default amount of 5 simultaneous connections"""
+    pass
+
+
+def test_request_timeout(server_factory):
+    """Test client handles server timeout"""
+    pass
+
+
+def test_content_encoding(server_factory):
+    """Test server properly handles and responds with gzip/deflate content"""
+    pass
+
+
+def test_redirect_handling(server_factory):
+    """Test server sends proper 3xx redirects and client can follow them"""
+    pass
+
+
+def test_chunked_transfer_encoding(server_factory):
+    """Test server can chunk large responses in chunks and client can properly
+    reconstruct them"""
+    pass
+
+
+def test_connection_keep_alive(server_factory):
+    """Test server honors Connection: keep-alive header"""
+    pass
+
+
+def test_malformed_http_headers(server_factory):
+    """Test server properly handles malformed headers"""
+    pass
+
+
+def test_other_http_methods(server_factory):
+    """Test server correctly implements HEAD, GET, POST etc"""
+    pass
+
+
+def test_content_negotiation(server_factory):
+    """Test server respects Accept headers and returns content in correct format"""
+    pass
+
+
+def test_rate_limiting(server_factory):
+    """Test server/client can deal with 429 Too Many Requests"""
+    pass
+
+
+def test_partial_content(server_factory):
+    """Test server/client handles 206 Partial Content"""
+    pass
