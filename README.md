@@ -60,7 +60,7 @@ The next steps for this testing suite focus on the following:
 
 - CI/CD system that would manage all this (including observability tools and logging)
 
-- A unified source of truth for the protocol specification using an [Interface description language](https://en.wikipedia.org/wiki/Interface_description_language), bonus points for it being translatable to our code and tests
+- A unified source of truth for the protocol specification using an [Interface description language](https://en.wikipedia.org/wiki/Interface_description_language), bonus points for it being translatable to our code and tests (something similar to [schemathesis](https://github.com/schemathesis/schemathesis) but not for a REST API)
 
 ## Usage
 
