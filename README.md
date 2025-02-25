@@ -46,7 +46,7 @@ The acceptance tests represent the most comprehensive and valuable, but expensiv
 - Catch environment-specific issues
 - Vendor specific (perhaps not always compliant with the protocol) behavior _(looking at you, Microsoft)_
 
-![E2E testing with a Proxy diagram](disgram.jpg)
+![E2E testing with a Proxy diagram](diagram.jpg)
 
 __Note:__ It is important _not_ to verify the system using the same protocol we are testing. That way we can somewhat circumvent a scenario where our protocol is faulty/unreliable (aka [The Two Generals' Problem](https://en.wikipedia.org/wiki/Two_Generals%27_Problem)) and the tested system would "lie" to us about its own state. In the diagram above I propose to use probes at various points of the communication path, that would report back using a different protocol (observability).
 
