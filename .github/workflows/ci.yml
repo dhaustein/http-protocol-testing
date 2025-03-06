@@ -34,7 +34,7 @@ jobs:
 
       - name: "Type check with mypy"
         run: |
-          uv run mypy . -v
+          uv run mypy . --strict -v
 
   test:
     runs-on: ubuntu-latest

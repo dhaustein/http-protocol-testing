@@ -5,7 +5,7 @@ import pytest  # noqa: F401
 from server import contruct_response, start_server
 
 
-def test_server_connection():
+def test_server_connection() -> None:
     """Test server with a mocked client connection
 
     We mock the socker and fake a client request and check the server response is 'HTTP compliant'
