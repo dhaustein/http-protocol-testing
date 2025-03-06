@@ -29,7 +29,7 @@ def send_request(
     return request.decode("utf-8"), data.decode("utf-8")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="HTTP Client with configurable request"
     )

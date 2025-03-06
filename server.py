@@ -47,7 +47,7 @@ def start_server(
     return response.decode("utf-8"), data.decode("utf-8")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="HTTP Server with configurable response"
     )

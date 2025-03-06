@@ -5,7 +5,7 @@ import pytest  # noqa: F401
 from client import send_request
 
 
-def test_send_request():
+def test_send_request() -> None:
     """Test client with a mocked server response
 
     We pretend-check the client is 'HTTP complicant' by checking it includes the expected headers

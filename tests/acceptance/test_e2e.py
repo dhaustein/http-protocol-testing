@@ -57,7 +57,7 @@ def client_container(podman_network: str) -> Generator[str, None, None]:
 # example test cases
 
 
-def test_basic_http_communication(server_container: str, client_container: str):
+def test_basic_http_communication(server_container: str, client_container: str) -> None:
     """Test basic HTTP request-response cycle"""
     client = podman.PodmanClient()
     container = client.containers.get(client_container)
@@ -71,6 +71,6 @@ def test_basic_http_communication(server_container: str, client_container: str):
     assert "HTTP/1.1 200 OK" in output.decode()
 
 
-def test_http_headers_compliance(server_container: str, client_container: str):
+def test_http_headers_compliance(server_container: str, client_container: str) -> None:
     """Test HTTP headers format compliance"""
     pass

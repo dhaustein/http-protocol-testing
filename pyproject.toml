@@ -16,3 +16,6 @@ pythonpath = "."
 addopts = [
     "--import-mode=importlib",
 ]
+
+[tool.mypy]
+strict = true
