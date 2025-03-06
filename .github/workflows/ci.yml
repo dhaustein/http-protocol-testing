@@ -30,7 +30,7 @@ jobs:
 
       - name: "Lint with ruff"
         run: |
-          uv run ruff
+          uv run ruff check
 
       - name: "Type check with mypy"
         run: |
