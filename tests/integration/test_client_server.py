@@ -1,7 +1,7 @@
 import random
 import threading
 import time
-from typing import Callable, Generator
+from typing import Callable, Generator, TypeAlias
 
 import pytest
 
@@ -9,7 +9,9 @@ from client import send_request
 from server import construct_response, start_server
 
 # fun with types
-ServerFactoryCallable = Callable[[bytes], tuple[threading.Thread, int]]
+ServerThread: TypeAlias = threading.Thread
+ServerPort: TypeAlias = int
+ServerFactoryCallable = Callable[[bytes], tuple[ServerThread, ServerPort]]
 ServerFactoryFixture = Generator[ServerFactoryCallable, None, None]
 
 
@@ -58,7 +60,7 @@ def server_factory() -> ServerFactoryFixture:
         thread = threading.Thread(target=run_server, daemon=True)
         threads.append((thread, port))
         thread.start()
-        time.sleep(0.1)
+        time.sleep(0.1)  # should be replaced with a proper polling/readiness check
 
         return thread, port
 
@@ -106,7 +108,7 @@ def test_extra_long_request_payload_rejected(
     """Test that a request larger than the default buffer size of 1024 the server
     will reject this with 'Connection reset by peer'"""
     thread, port = server_factory(b"Request received!")
-    very_long_payload = b"bla" * 1000000000
+    very_long_payload = b"bla" * 100000000
 
     with pytest.raises(ConnectionResetError):
         request, response = send_request(very_long_payload, port=port)

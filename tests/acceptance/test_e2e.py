@@ -12,6 +12,29 @@ def get_container_logs(container_id: str) -> str:  # type: ignore
     pass
 
 
+def wait_for_server_ready(
+    server_name: str, max_attempts: int = 20, delay: float = 0.5
+) -> None:
+    """Quick and dirty wait for server to be ready by attempting to connect to it"""
+    for attempt in range(max_attempts):
+        try:
+            client = podman.PodmanClient()
+            container = client.containers.get(server_name)
+            exit_code, _ = container.exec_run("ss -tulpn | grep LISTEN")
+
+            if exit_code == 0:
+                return
+        except Exception:
+            pass
+
+        print(f"Waiting for server to be ready... (attempt {attempt+1}/{max_attempts})")
+        time.sleep(delay)
+
+    raise TimeoutError(
+        f"Server did not become ready after {max_attempts * delay} seconds"
+    )
+
+
 # environment setup as fixtures
 
 
@@ -36,8 +59,11 @@ def server_container(podman_network: str) -> Generator[str, None, None]:
         name="test-server",
         detach=True,
     )
-    time.sleep(10)  # wait for server to start
+
+    wait_for_server_ready("test-server", max_attempts=10)
+
     yield "test-server"
+
     container.stop()
     container.remove()
 
