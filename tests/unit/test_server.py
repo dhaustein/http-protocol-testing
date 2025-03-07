@@ -2,7 +2,7 @@ from unittest.mock import Mock, patch
 
 import pytest  # noqa: F401
 
-from server import contruct_response, start_server
+from server import construct_response, start_server
 
 
 def test_server_connection() -> None:
@@ -13,7 +13,7 @@ def test_server_connection() -> None:
     host = "127.0.0.1"
     port = 8888
     client_request = b"HTTP/1.1 200 OK\r\nUser-Agent: CrappyClient/0.0.1\r\nContent-Type: text/plain\r\n\r\ntest payload from client"
-    server_response = contruct_response(b"My test response")
+    server_response = construct_response(b"My test response")
 
     mock_conn = Mock()
     mock_socket = Mock()

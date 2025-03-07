@@ -8,7 +8,7 @@ NUM_CONNS = 5
 DEFAULT_RESPONSE = b"Request received!"
 
 
-def contruct_response(response_payload: bytes = DEFAULT_RESPONSE) -> bytes:
+def construct_response(response_payload: bytes = DEFAULT_RESPONSE) -> bytes:
     response_line = b"HTTP/1.1 200 OK\r\n"
     headers = b"".join(
         [b"Server: CrappyServer/0.0.1\r\n", b"Content-Type: text/plain\r\n"]
@@ -61,7 +61,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    start_server(response=contruct_response(args.response_payload.encode("utf-8")))
+    start_server(response=construct_response(args.response_payload.encode("utf-8")))
 
 
 if __name__ == "__main__":
