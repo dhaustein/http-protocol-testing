@@ -6,7 +6,7 @@ from typing import Callable, Generator
 import pytest
 
 from client import send_request
-from server import contruct_response, start_server
+from server import construct_response, start_server
 
 # fun with types
 ServerFactoryCallable = Callable[[bytes], tuple[threading.Thread, int]]
@@ -53,7 +53,7 @@ def server_factory() -> ServerFactoryFixture:
         port = random.randint(8081, 9080)
 
         def run_server() -> None:
-            start_server(contruct_response(response_payload), port=port)
+            start_server(construct_response(response_payload), port=port)
 
         thread = threading.Thread(target=run_server, daemon=True)
         threads.append((thread, port))
