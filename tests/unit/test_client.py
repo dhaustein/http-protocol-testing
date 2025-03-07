@@ -11,7 +11,7 @@ def test_send_request() -> None:
     We pretend-check the client is 'HTTP complicant' by checking it includes the expected headers
     """
     payload = b"test payload"
-    request = b"HTTP/1.1 200 OK\r\nUser-Agent: CrappyClient/0.0.1\r\nContent-Type: text/plain\r\n\r\ntest payload"
+    request = b"GET / HTTP/1.1\r\nHost: 127.0.0.1:8080\r\nUser-Agent: CrappyClient/0.0.1\r\nContent-Type: text/plain\r\nContent-Length: 12\r\n\r\ntest payload"
     response = b"HTTP/1.1 200 OK\r\nServer: CrappyServer/0.0.1\r\nContent-Type: text/plain\r\n\r\nRequest received!"
 
     # mock the server response

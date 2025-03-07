@@ -12,13 +12,18 @@ def send_request(
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((host, port))
 
-        response_line = b"HTTP/1.1 200 OK\r\n"
+        request_line = b"GET / HTTP/1.1\r\n"
         headers = b"".join(
-            [b"User-Agent: CrappyClient/0.0.1\r\n", b"Content-Type: text/plain\r\n"]
+            [
+                f"Host: {host}:{port}\r\n".encode("utf-8"),
+                b"User-Agent: CrappyClient/0.0.1\r\n",
+                b"Content-Type: text/plain\r\n",
+                f"Content-Length: {len(request_payload)}\r\n".encode("utf-8"),
+            ]
         )
         blank_line = b"\r\n"
 
-        request = b"".join([response_line, headers, blank_line, request_payload])
+        request = b"".join([request_line, headers, blank_line, request_payload])
         s.sendall(request)
         data = s.recv(1024)
 
